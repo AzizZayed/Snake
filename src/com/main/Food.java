@@ -12,6 +12,12 @@ public class Food {
 	public Food(Snake snake) {
 		init(snake.getBody());
 	}
+	
+	public void init(ArrayList<SnakeBody> body) {
+		randomCoordinates(body);
+
+		color = randomColor();
+	}
 
 	private Color randomColor() {
 		Color c;
@@ -67,11 +73,4 @@ public class Food {
 		g.setColor(color);
 		g.fillRect(x, y, Game.CELL_SIZE, Game.CELL_SIZE);
 	}
-
-	public void init(ArrayList<SnakeBody> body) {
-		randomCoordinates(body);
-
-		color = randomColor();
-	}
-
 }

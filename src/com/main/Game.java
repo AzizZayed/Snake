@@ -15,13 +15,12 @@ public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	public static final int CELL_SIZE = 15; //px
-	private static final int GRID_SIZE = 40; //cells
-
-	public final static int WIDTH = CELL_SIZE * GRID_SIZE;
-	public final static int HEIGHT = WIDTH; // 1:1 aspect ratio
-
-	public final static int GRID_WIDTH = WIDTH / CELL_SIZE;
-	public final static int GRID_HEIGHT = HEIGHT / CELL_SIZE;
+	
+	public final static int GRID_WIDTH = 40;
+	public final static int GRID_HEIGHT = 40;
+	
+	public final static int WIDTH = CELL_SIZE * GRID_WIDTH;
+	public final static int HEIGHT = CELL_SIZE * GRID_HEIGHT; // 1:1 aspect ratio
 
 	public boolean running = false; // true if the game is running
 	private Thread gameThread; // thread where the game is updated AND drawn (single thread game)

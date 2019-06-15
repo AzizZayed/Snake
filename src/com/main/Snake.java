@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class Snake {
 
-	private short tailAdd; // length we add every time food is eaten
-	private short tailStart; // length at the start
+	private int tailAdd; // length we add every time food is eaten
+	private int tailStart; // length at the start
 	private byte xDirection = 0;
 	private byte yDirection = 0;
 
@@ -20,7 +20,8 @@ public class Snake {
 	}
 
 	private void init(Food food) {
-		stop();
+		xDirection = 0;
+		yDirection = 0;
 		
 		body = new ArrayList<SnakeBody>();
 
@@ -32,11 +33,6 @@ public class Snake {
 		
 		if (food != null)
 			food.init(body);
-	}
-
-	private void stop() {
-		xDirection = 0;
-		yDirection = 0;
 	}
 
 	private void restart() {

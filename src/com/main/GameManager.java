@@ -10,7 +10,7 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-public class Game extends Canvas implements Runnable {
+public class GameManager extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable {
 	// food
 	private Food food;
 
-	public Game() {
+	public GameManager() {
 
 		canvasSetup();
 		initialize();
@@ -242,7 +242,7 @@ public class Game extends Canvas implements Runnable {
 	 * start of the program
 	 */
 	public static void main(String[] args) {
-		new Game();
+		new GameManager();
 	}
 
 }

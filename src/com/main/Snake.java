@@ -28,8 +28,8 @@ public class Snake {
 		
 		body = new ArrayList<SnakeBody>();
 
-		int x = (Game.GRID_WIDTH / 2) * Game.CELL_SIZE;
-		int y = (Game.GRID_HEIGHT / 2) * Game.CELL_SIZE;
+		int x = (GameManager.GRID_WIDTH / 2) * GameManager.CELL_SIZE;
+		int y = (GameManager.GRID_HEIGHT / 2) * GameManager.CELL_SIZE;
 		for (int i = 0; i < tailStart; i++) {
 			body.add(new SnakeBody(x, y));
 		}
@@ -96,7 +96,7 @@ public class Snake {
 		int x = head.getX();
 		int y = head.getY();
 
-		return (x < 0 || y < 0 || x >= Game.WIDTH || y >= Game.HEIGHT);
+		return (x < 0 || y < 0 || x >= GameManager.WIDTH || y >= GameManager.HEIGHT);
 	}
 	
 	private void move() {
@@ -108,8 +108,8 @@ public class Snake {
 		} else {
 
 			body.remove(body.size() - 1);
-			body.add(0, new SnakeBody(head.getX() + Game.CELL_SIZE * xDirection,
-					head.getY() + Game.CELL_SIZE * yDirection));
+			body.add(0, new SnakeBody(head.getX() + GameManager.CELL_SIZE * xDirection,
+					head.getY() + GameManager.CELL_SIZE * yDirection));
 		}
 
 	}

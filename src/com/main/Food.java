@@ -40,8 +40,8 @@ public class Food {
 		int x = -1, y = -1;
 
 		while (same) {
-			x = ((int) (Game.GRID_WIDTH * Math.random())) * Game.CELL_SIZE;
-			y = ((int) (Game.GRID_HEIGHT * Math.random())) * Game.CELL_SIZE;
+			x = ((int) (GameManager.GRID_WIDTH * Math.random())) * GameManager.CELL_SIZE;
+			y = ((int) (GameManager.GRID_HEIGHT * Math.random())) * GameManager.CELL_SIZE;
 
 			int i = 0;
 			same = false; 
@@ -71,6 +71,6 @@ public class Food {
 
 	public void draw(Graphics g) {
 		g.setColor(color);
-		g.fillRect(x, y, Game.CELL_SIZE, Game.CELL_SIZE);
+		g.fillRect(x, y, GameManager.CELL_SIZE, GameManager.CELL_SIZE);
 	}
 }

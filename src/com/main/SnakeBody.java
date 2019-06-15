@@ -14,10 +14,10 @@ public class SnakeBody{
 
 	public void draw(Graphics g, Color color) {
 		g.setColor(color);
-		g.fillRect(x, y, Game.CELL_SIZE, Game.CELL_SIZE);
+		g.fillRect(x, y, GameManager.CELL_SIZE, GameManager.CELL_SIZE);
 		
 		g.setColor(Color.BLACK);
-		g.drawRect(x, y, Game.CELL_SIZE, Game.CELL_SIZE);
+		g.drawRect(x, y, GameManager.CELL_SIZE, GameManager.CELL_SIZE);
 	}
 
 	/**
@@ -35,8 +35,8 @@ public class SnakeBody{
 	}
 
 	public void move(byte xDir, byte yDir) {
-		x += xDir*Game.CELL_SIZE;
-		y += yDir*Game.CELL_SIZE;
+		x += xDir*GameManager.CELL_SIZE;
+		y += yDir*GameManager.CELL_SIZE;
 	}
 	
 }

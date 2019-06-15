@@ -8,6 +8,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 
+import javax.swing.JFrame;
+
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
@@ -24,7 +26,7 @@ public class Game extends Canvas implements Runnable {
 	public boolean running = false; // true if the game is running
 	private Thread gameThread; // thread where the game is updated AND drawn (single thread game)
 
-	// snake arraylist snake
+	// snake ArrayList snake
 	private Snake snake;
 
 	// food
@@ -35,7 +37,7 @@ public class Game extends Canvas implements Runnable {
 		canvasSetup();
 		initialise();
 
-		new Window("Snake", this);
+		newWindow();
 
 		//this.addKeyListener(new KeyInput(snake));
 		this.addKeyListener(new KeyAdapter() {
@@ -60,6 +62,19 @@ public class Game extends Canvas implements Runnable {
 
 		this.setFocusable(true);
 
+	}
+	
+	private void newWindow() {
+		JFrame frame = new JFrame("Snake");
+
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.add(this);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+
+		start();
 	}
 
 	/**
@@ -142,7 +157,7 @@ public class Game extends Canvas implements Runnable {
 		 * Runnable Interface we can give it to a thread constructor. That thread with
 		 * call it's "run" method which this class inherited (it's directly above)
 		 */
-		gameThread.start(); // start thread
+		gameThread.start(); // start thread 
 		running = true;
 	}
 

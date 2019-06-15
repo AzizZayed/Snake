@@ -34,11 +34,10 @@ public class Game extends Canvas implements Runnable {
 	public Game() {
 
 		canvasSetup();
-		initialise();
+		initialize();
 
 		newWindow();
 
-		//this.addKeyListener(new KeyInput(snake));
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -79,7 +78,7 @@ public class Game extends Canvas implements Runnable {
 	/**
 	 * initialize all our game objects
 	 */
-	private void initialise() {
+	private void initialize() {
 		// Initialize snake object
 		snake = new Snake();
 

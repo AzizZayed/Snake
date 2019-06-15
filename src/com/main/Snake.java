@@ -1,6 +1,7 @@
 package com.main;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -10,6 +11,7 @@ public class Snake {
 	private int tailStart; // length at the start
 	private byte xDirection = 0;
 	private byte yDirection = 0;
+	private int score = 0;
 
 	private ArrayList<SnakeBody> body;
 
@@ -20,6 +22,7 @@ public class Snake {
 	}
 
 	private void init(Food food) {
+		score = 0;
 		xDirection = 0;
 		yDirection = 0;
 		
@@ -36,6 +39,7 @@ public class Snake {
 	}
 
 	private void restart() {
+		score = 0;
 		for (int i = body.size() - 1; i >= tailStart; i--)
 			body.remove(i);
 	}
@@ -94,30 +98,7 @@ public class Snake {
 
 		return (x < 0 || y < 0 || x >= Game.WIDTH || y >= Game.HEIGHT);
 	}
-
-	public void draw(Graphics g) {
-		Color color = Color.WHITE;
-
-		for (SnakeBody bodyPart : body) {
-			bodyPart.draw(g, color);
-		}
-	}
-
-	public void update(Food food) {
-		move();
-
-		if (hitTail())
-			restart();
-		if (hitWall())
-			init(food);
-
-		if (ateFood(food)) {
-			addToTail();
-			food.init(body);
-		}
-
-	}
-
+	
 	private void move() {
 
 		SnakeBody head = body.get(0);
@@ -138,5 +119,34 @@ public class Snake {
 	 */
 	public ArrayList<SnakeBody> getBody() {
 		return body;
+	}
+
+	public void draw(Graphics g) {
+		Color color = Color.WHITE;
+
+		for (SnakeBody bodyPart : body) {
+			bodyPart.draw(g, color);
+		}
+		
+		int txtSize = 25;
+		g.setColor(color);
+		g.setFont(new Font("Times New Roman", Font.BOLD, txtSize));
+		g.drawString("Score: " + Integer.toString(score), 5, txtSize);
+	}
+
+	public void update(Food food) {
+		move();
+
+		if (hitTail())
+			restart();
+		if (hitWall())
+			init(food);
+
+		if (ateFood(food)) {
+			addToTail();
+			score += tailAdd * 15;
+			food.init(body);
+		}
+
 	}
 }

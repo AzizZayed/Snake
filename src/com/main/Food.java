@@ -6,19 +6,32 @@ import java.util.ArrayList;
 
 public class Food {
 
-	private int x, y;
-	private Color color;
+	private int x, y; // coordinates on the canvas
+	private Color color; // color of the food
 
+	/**
+	 * Constructor: create and initialize the food
+	 * 
+	 * @param snake: used to avoid initializing the food under the snake.
+	 */
 	public Food(Snake snake) {
 		init(snake.getBody());
 	}
-	
+
+	/**
+	 * initialize the food
+	 * 
+	 * @param body: The body ArrayList extracted from the snake object
+	 */
 	public void init(ArrayList<SnakeBody> body) {
 		randomCoordinates(body);
 
 		color = randomColor();
 	}
 
+	/**
+	 * @return a random color between green, red, blue and orange (very rare)
+	 */
 	private Color randomColor() {
 		Color c;
 		double random = Math.random();
@@ -35,6 +48,12 @@ public class Food {
 		return c;
 	}
 
+	/**
+	 * generate the random coordinates
+	 * 
+	 * @param body: The body ArrayList extracted from the snake object. It is used
+	 *              to avoid putting the piece of food under the snake
+	 */
 	private void randomCoordinates(ArrayList<SnakeBody> body) {
 		boolean same = true;
 		int x = -1, y = -1;
@@ -44,13 +63,13 @@ public class Food {
 			y = ((int) (GameManager.GRID_HEIGHT * Math.random())) * GameManager.CELL_SIZE;
 
 			int i = 0;
-			same = false; 
+			same = false;
 			while (!same && i < body.size()) {
 				same = (body.get(i).getX() == x && body.get(i).getY() == y);
 				i++;
 			}
 		}
-		
+
 		this.x = x;
 		this.y = y;
 	}
@@ -69,6 +88,11 @@ public class Food {
 		return y;
 	}
 
+	/**
+	 * Draw the piece of food
+	 * 
+	 * @param g Graphics used to draw on the Canvas
+	 */
 	public void draw(Graphics g) {
 		g.setColor(color);
 		g.fillRect(x, y, GameManager.CELL_SIZE, GameManager.CELL_SIZE);

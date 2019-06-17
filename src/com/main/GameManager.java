@@ -14,23 +14,26 @@ public class GameManager extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final int CELL_SIZE = 15; //px
-	
-	public final static int GRID_WIDTH = 40;
-	public final static int GRID_HEIGHT = 40;
-	
-	public final static int WIDTH = CELL_SIZE * GRID_WIDTH;
-	public final static int HEIGHT = CELL_SIZE * GRID_HEIGHT; // 1:1 aspect ratio
+	public static final int CELL_SIZE = 15; // in pixels
+
+	public final static int GRID_WIDTH = 40; // in cells
+	public final static int GRID_HEIGHT = 40; // in cells
+
+	public final static int WIDTH = CELL_SIZE * GRID_WIDTH; // width of the screen in pixels
+	public final static int HEIGHT = CELL_SIZE * GRID_HEIGHT; // height of the screen in pixels
 
 	public boolean running = false; // true if the game is running
 	private Thread gameThread; // thread where the game is updated AND drawn (single thread game)
 
-	// snake ArrayList snake
+	// the actual snake
 	private Snake snake;
 
-	// food
+	// the food
 	private Food food;
 
+	/**
+	 * Constructor: Create and initialize the JFrame and the canvas
+	 */
 	public GameManager() {
 
 		canvasSetup();
@@ -38,30 +41,40 @@ public class GameManager extends Canvas implements Runnable {
 
 		newWindow();
 
+		/*
+		 * add something that will detect events on the keyboard like key presses and
+		 * key releases. That thing is called a keyListener
+		 */
 		this.addKeyListener(new KeyAdapter() {
+
+			/**
+			 * Detect key presses on the keyboard
+			 * 
+			 * @Param e: the information on the key press
+			 */
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyCode();
-				
-				if (key == KeyEvent.VK_UP) {
+
+				if (key == KeyEvent.VK_UP) { // up array key presses
 					snake.setyDirection((byte) -1);
-				}
-				else if (key == KeyEvent.VK_DOWN) {
+				} else if (key == KeyEvent.VK_DOWN) { // down array key presses
 					snake.setyDirection((byte) 1);
-				}
-				else if (key == KeyEvent.VK_RIGHT) {
+				} else if (key == KeyEvent.VK_RIGHT) { // right array key presses
 					snake.setxDirection((byte) 1);
-				}
-				else if (key == KeyEvent.VK_LEFT) {
+				} else if (key == KeyEvent.VK_LEFT) { // left array key presses
 					snake.setxDirection((byte) -1);
 				}
 			}
 		});
 
 		this.setFocusable(true);
-
 	}
-	
+
+	/**
+	 * Create the window where our Canvas will go (this class inherits from Canvas)
+	 * The window will be a JFrame
+	 */
 	private void newWindow() {
 		JFrame frame = new JFrame("Snake");
 
@@ -72,7 +85,7 @@ public class GameManager extends Canvas implements Runnable {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
-		start();
+		start(); // start the thread and the game
 	}
 
 	/**
@@ -97,10 +110,12 @@ public class GameManager extends Canvas implements Runnable {
 
 	/**
 	 * Game loop
+	 * 
+	 * meat of our game
 	 */
 	@Override
 	public void run() {
-		// so you can keep your sanity, I won't explain the game loop... you're welcome
+		// I have a full video explaining this game loop on my channel Coding Heaven
 
 		this.requestFocus();
 		// game timer
@@ -142,7 +157,7 @@ public class GameManager extends Canvas implements Runnable {
 			}
 		}
 
-		stop();
+		stop(); // stop the thread and the game
 	}
 
 	/**
@@ -151,11 +166,12 @@ public class GameManager extends Canvas implements Runnable {
 	public synchronized void start() {
 		gameThread = new Thread(this);
 		/*
-		 * since "this" is the "Game" Class you are in right now and it implements the
-		 * Runnable Interface we can give it to a thread constructor. That thread with
-		 * call it's "run" method which this class inherited (it's directly above)
+		 * since "this" is the "GameManager" Class you are in right now and it
+		 * implements the Runnable Interface we can give it to a thread constructor.
+		 * That thread with call it's "run" method which this class inherited (it's
+		 * directly above)
 		 */
-		gameThread.start(); // start thread 
+		gameThread.start(); // start thread
 		running = true;
 	}
 
@@ -172,7 +188,7 @@ public class GameManager extends Canvas implements Runnable {
 	}
 
 	/**
-	 * draw the back and all the objects
+	 * draw the background and all the objects using buffers
 	 */
 	public void render() {
 		// Initialize drawing tools first before drawing
@@ -183,10 +199,10 @@ public class GameManager extends Canvas implements Runnable {
 		if (buffer == null) { // if it does not exist, we can't draw! So create it please
 			this.createBufferStrategy(3); // Creating a Triple Buffer
 			/*
-			 * triple buffering basically means we have 3 different canvases this is used to
-			 * improve performance but the drawbacks are the more buffers, the more memory
-			 * needed so if you get like a memory error or something, put 2 instead of 3 or
-			 * even 1...if you run a computer from 2002...
+			 * triple buffering basically means we have 3 different canvases. This is used
+			 * to improve performance but the drawbacks are the more buffers, the more
+			 * memory needed so if you get like a memory error or something, put 2 instead
+			 * of 3, or even 1...if you run a computer from 2002...
 			 * 
 			 * BufferStrategy:
 			 * https://docs.oracle.com/javase/7/docs/api/java/awt/image/BufferStrategy.html
@@ -212,8 +228,7 @@ public class GameManager extends Canvas implements Runnable {
 		// draw food
 		food.draw(g);
 
-		// actually draw
-		g.dispose();
+		// actually draw. If this isn't called, we won't see what we draw on the buffer
 		buffer.show();
 
 	}
@@ -230,16 +245,15 @@ public class GameManager extends Canvas implements Runnable {
 	}
 
 	/**
-	 * update settings and move all objects
+	 * update settings and update all objects
 	 */
 	public void update() {
-		// update snake (movements)
+		// update snake (movements and collisions)
 		snake.update(food);
-		
 	}
 
 	/**
-	 * start of the program
+	 * main method: the very start of the program
 	 */
 	public static void main(String[] args) {
 		new GameManager();

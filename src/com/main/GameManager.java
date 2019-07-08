@@ -240,7 +240,7 @@ public class GameManager extends Canvas implements Runnable {
 	 */
 	private void drawBackground(Graphics g) {
 		// black background
-		g.setColor(Color.black);
+		g.setColor(Color.white);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 	}
 

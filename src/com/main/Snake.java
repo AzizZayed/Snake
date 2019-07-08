@@ -172,7 +172,7 @@ public class Snake {
 	 * @param g Graphics used to draw on the Canvas
 	 */
 	public void draw(Graphics g) {
-		Color color = Color.WHITE;
+		Color color = Color.black;
 
 		for (SnakeBody bodyPart : body) {
 			bodyPart.draw(g, color);

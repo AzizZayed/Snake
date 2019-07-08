@@ -251,9 +251,10 @@ public class GameManager extends Canvas implements Runnable {
 	 */
 	public void update() {
 		// update snake (movements and collisions)
-		if (!paused) {
-			snake.update(food);
-		}
+		if (paused) 
+			return;
+		
+		snake.update(food);
 	}
 
 	/**

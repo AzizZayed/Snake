@@ -40,12 +40,19 @@ public class Food {
 			c = Color.GREEN;
 		else if (random < 0.60)
 			c = Color.RED;
-		else if (random < 0.96)
+		else if (random < 0.95)
 			c = Color.BLUE;
 		else
 			c = Color.ORANGE;
 
 		return c;
+	}
+
+	/**
+	 * @return the color
+	 */
+	public Color getColor() {
+		return color;
 	}
 
 	/**

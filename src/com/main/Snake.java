@@ -200,7 +200,12 @@ public class Snake {
 
 		if (ateFood(food)) {
 			addToTail();
-			score += tailAdd * 15;
+			
+			if (food.getColor() == Color.orange)
+				score += tailAdd * 30;
+			else
+				score += tailAdd * 15;
+			
 			food.init(body);
 		}
 

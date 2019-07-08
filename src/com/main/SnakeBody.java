@@ -41,7 +41,7 @@ public class SnakeBody {
 		g.setColor(color);
 		g.fillRect(x, y, GameManager.CELL_SIZE, GameManager.CELL_SIZE);
 
-		g.setColor(Color.BLACK);
+		g.setColor(Color.white);
 		g.drawRect(x, y, GameManager.CELL_SIZE, GameManager.CELL_SIZE);
 	}
 

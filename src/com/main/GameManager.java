@@ -242,7 +242,7 @@ public class GameManager extends Canvas implements Runnable {
 	 */
 	private void drawBackground(Graphics g) {
 		// black background
-		g.setColor(Color.white);
+		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 	}
 

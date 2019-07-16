@@ -17,7 +17,8 @@ public class Snake {
 	private byte xDirection = 0;
 	private byte yDirection = 0;
 
-	private int score = 0;
+	private int score = 0; // hold the score of the player
+	private int scoreMult = 30; // used to calculate new score when the player eats food
 
 	// All the body parts, the body part at index 0 is the head
 	private ArrayList<SnakeBody> body;
@@ -27,7 +28,7 @@ public class Snake {
 	 */
 	public Snake() {
 		tailAdd = 4;
-		tailStart = 250;
+		tailStart = 1;
 		init(null);
 	}
 
@@ -55,10 +56,12 @@ public class Snake {
 	}
 
 	/**
-	 * restart from the initial tail length. Means the snake hit itself probably
+	 * restart from the initial tail length. This function is usually called when
+	 * the snake hits itself
 	 */
 	private void restart() {
 		score = 0;
+		
 		for (int i = body.size() - 1; i >= tailStart; i--)
 			body.remove(i);
 	}
@@ -67,7 +70,7 @@ public class Snake {
 	 * Set the direction in x. Make sure the snake is not already moving in the
 	 * opposite direction of the desired direction. This is illegal in Snake
 	 * 
-	 * @param xDirection: the xDirection to set
+	 * @param xDir: the x direction to set
 	 */
 	public void setxDirection(byte xDir) {
 		if (xDirection != -xDir)
@@ -79,7 +82,7 @@ public class Snake {
 	 * Set the direction in y. Make sure the snake is not already moving in the
 	 * opposite direction of the desired direction. This is illegal in Snake
 	 * 
-	 * @param yDirection: the yDirection to set
+	 * @param yDir: the y direction to set
 	 */
 	public void setyDirection(byte yDir) {
 		if (yDirection != -yDir)
@@ -126,7 +129,8 @@ public class Snake {
 
 		int i = 1;
 		while (!hit && i < body.size()) {
-			hit = (head.getX() == body.get(i).getX() && head.getY() == body.get(i).getY());
+			SnakeBody sb = body.get(i);
+			hit = (head.getX() == sb.getX() && head.getY() == sb.getY());
 			i++;
 		}
 
@@ -172,7 +176,7 @@ public class Snake {
 	 * @param g Graphics used to draw on the Canvas
 	 */
 	public void draw(Graphics g) {
-		Color color = Color.black;
+		Color color = Color.BLACK;
 
 		for (SnakeBody bodyPart : body) {
 			bodyPart.draw(g, color);
@@ -181,7 +185,7 @@ public class Snake {
 		int txtSize = 25;
 		g.setColor(color);
 		g.setFont(new Font("Times New Roman", Font.BOLD, txtSize));
-		g.drawString("Score: " + Integer.toString(score), 5, txtSize);
+		g.drawString("Score: " + score, 5, txtSize);
 	}
 
 	/**
@@ -200,12 +204,12 @@ public class Snake {
 
 		if (ateFood(food)) {
 			addToTail();
-			
-			if (food.getColor() == Color.orange)
-				score += tailAdd * 30;
+
+			if (food.getColor() == Color.ORANGE)
+				score += tailAdd * scoreMult * 2;
 			else
-				score += tailAdd * 15;
-			
+				score += tailAdd * scoreMult;
+
 			food.init(body);
 		}
 

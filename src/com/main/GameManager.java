@@ -139,13 +139,13 @@ public class GameManager extends Canvas implements Runnable {
 			fDeltaTime += (currentTime - startTime) / fOptimalTime;
 			startTime = currentTime;
 
-			while (uDeltaTime >= 1) {
+			if (uDeltaTime >= 1) {
 				update();
 				updates++;
 				uDeltaTime--;
 			}
 
-			while (fDeltaTime >= 1) {
+			if (fDeltaTime >= 1) {
 				render();
 				frames++;
 				fDeltaTime--;

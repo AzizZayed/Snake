@@ -23,7 +23,7 @@ public class GameManager extends Canvas implements Runnable {
 	public final static int HEIGHT = CELL_SIZE * GRID_HEIGHT; // height of the screen in pixels
 
 	public boolean running = false; // true if the game is running
-	private boolean paused = false; //updating or not
+	private boolean paused = false; // updating or not
 	private Thread gameThread; // thread where the game is updated AND drawn (single thread game)
 
 	// the actual snake
@@ -31,6 +31,7 @@ public class GameManager extends Canvas implements Runnable {
 
 	// the food
 	private Food food;
+
 	/**
 	 * Constructor: Create and initialize the JFrame and the canvas
 	 */
@@ -64,7 +65,7 @@ public class GameManager extends Canvas implements Runnable {
 					snake.setxDirection((byte) 1);
 				} else if (key == KeyEvent.VK_LEFT) { // left array key presses
 					snake.setxDirection((byte) -1);
-				} else if (key == KeyEvent.VK_SPACE){
+				} else if (key == KeyEvent.VK_SPACE) {
 					paused = !paused;
 				}
 			}
@@ -251,9 +252,9 @@ public class GameManager extends Canvas implements Runnable {
 	 */
 	public void update() {
 		// update snake (movements and collisions)
-		if (paused) 
+		if (paused)
 			return;
-		
+
 		snake.update(food);
 	}
 

@@ -5,10 +5,16 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+/**
+ * class contains the snake
+ * 
+ * @author Zayed
+ *
+ */
 public class Snake {
 
-	private int tailAdd; // length we add every time food is eaten
-	private int tailStart; // length at the start
+	private int tailAdd = 4; // length we add every time food is eaten
+	private int tailStart = 1; // length at the start
 
 	/*
 	 * direction in x and y, if one is not zero, the other must be zero since the
@@ -25,34 +31,24 @@ public class Snake {
 
 	/**
 	 * Constructor: create and initialize the snake
-	 */
-	public Snake() {
-		tailAdd = 4;
-		tailStart = 1;
-		init(null);
-	}
-
-	/**
-	 * Initialize the snake
 	 * 
-	 * @param food: to initialize the food object right after sometimes this
-	 *              parameter will be null if there is no food object to pass in yet
+	 * @param gridWidth  - width of the canvas in grids
+	 * @param gridHeight - height of the canvas in grids
+	 * @param cellSize   - size of one grid cell in pixels
 	 */
-	private void init(Food food) {
+	public Snake(int gridWidth, int gridHeight, int cellSize) {
 		score = 0;
 		xDirection = 0;
 		yDirection = 0;
 
 		body = new ArrayList<SnakeBody>();
 
-		int x = (GameManager.GRID_WIDTH / 2) * GameManager.CELL_SIZE;
-		int y = (GameManager.GRID_HEIGHT / 2) * GameManager.CELL_SIZE;
+		int x = (gridWidth / 2) * cellSize;
+		int y = (gridHeight / 2) * cellSize;
+
 		for (int i = 0; i < tailStart; i++) {
 			body.add(new SnakeBody(x, y));
 		}
-
-		if (food != null)
-			food.init(body);
 	}
 
 	/**
@@ -61,7 +57,7 @@ public class Snake {
 	 */
 	private void restart() {
 		score = 0;
-		
+
 		for (int i = body.size() - 1; i >= tailStart; i--)
 			body.remove(i);
 	}
@@ -70,7 +66,7 @@ public class Snake {
 	 * Set the direction in x. Make sure the snake is not already moving in the
 	 * opposite direction of the desired direction. This is illegal in Snake
 	 * 
-	 * @param xDir: the x direction to set
+	 * @param xDir - the x direction to set
 	 */
 	public void setxDirection(byte xDir) {
 		if (xDirection != -xDir)
@@ -82,7 +78,7 @@ public class Snake {
 	 * Set the direction in y. Make sure the snake is not already moving in the
 	 * opposite direction of the desired direction. This is illegal in Snake
 	 * 
-	 * @param yDir: the y direction to set
+	 * @param yDir - the y direction to set
 	 */
 	public void setyDirection(byte yDir) {
 		if (yDirection != -yDir)
@@ -109,7 +105,7 @@ public class Snake {
 	 * test if the snake ate the food passed in parameter. Basically a simple
 	 * collision test
 	 * 
-	 * @param food: the food we will test if it was eaten
+	 * @param food - the food we will test if it was eaten
 	 * @return true if the food was eaten, false if otherwise
 	 */
 	private boolean ateFood(Food food) {
@@ -138,28 +134,24 @@ public class Snake {
 	}
 
 	/**
-	 * test if the snake's head hit a wall
-	 * 
-	 * @return true if the snake hit the wall, false if otherwise
-	 */
-	private boolean hitWall() {
-		SnakeBody head = body.get(0);
-		int x = head.getX();
-		int y = head.getY();
-
-		return (x < 0 || y < 0 || x >= GameManager.WIDTH || y >= GameManager.HEIGHT);
-	}
-
-	/**
 	 * Move the snake
+	 * 
+	 * @param width    - width of canvas in pixels
+	 * @param height   - height of canvas in pixels
+	 * @param cellSize - size of one grid cell in pixels
 	 */
-	private void move() {
+	private void move(int width, int height, int cellSize) {
 
 		SnakeBody head = body.get(0);
+
+		int x = head.getX() + cellSize * xDirection;
+		int y = head.getY() + cellSize * yDirection;
+
+		// determine the position of the new head
+		SnakeBody newHead = new SnakeBody(x < 0 ? width + x : x % width, y < 0 ? height + y : y % height);
 
 		body.remove(body.size() - 1);
-		body.add(0, new SnakeBody(head.getX() + GameManager.CELL_SIZE * xDirection,
-				head.getY() + GameManager.CELL_SIZE * yDirection));
+		body.add(0, newHead);
 
 	}
 
@@ -173,17 +165,16 @@ public class Snake {
 	/**
 	 * Draw the snake
 	 * 
-	 * @param g Graphics used to draw on the Canvas
+	 * @param g        - Graphics used to draw on the Canvas
+	 * @param cellSize - size of one grid cell in pixels
 	 */
-	public void draw(Graphics g) {
-		Color color = Color.BLACK;
-
+	public void draw(Graphics g, int cellSize) {
 		for (SnakeBody bodyPart : body) {
-			bodyPart.draw(g, color);
+			bodyPart.draw(g, cellSize);
 		}
 
 		int txtSize = 25;
-		g.setColor(color);
+		g.setColor(Color.BLACK);
 		g.setFont(new Font("Times New Roman", Font.BOLD, txtSize));
 		g.drawString("Score: " + score, 5, txtSize);
 	}
@@ -192,26 +183,26 @@ public class Snake {
 	 * update the snake object. In one update, we move the snake. Then we check for
 	 * collisions with the wall, the snake's tail and a piece of food
 	 * 
-	 * @param food: used for the collision tests
+	 * @param food:      used for the collision tests
+	 * @param gridWidth  - width of the canvas in grids
+	 * @param gridHeight - height of the canvas in grids
+	 * @param width      - width of canvas in pixels
+	 * @param height     - height of canvas in pixels
+	 * @param cellSize   - size of one grid cell in pixels
 	 */
-	public void update(Food food) {
-		move();
+	public boolean update(Food food, int gridWidth, int gridHeight, int width, int height, int cellSize) {
+		move(width, height, cellSize);
 
 		if (hitTail())
 			restart();
-		if (hitWall())
-			init(food);
 
 		if (ateFood(food)) {
 			addToTail();
+			score += tailAdd * scoreMult;
 
-			if (food.getColor() == Color.ORANGE)
-				score += tailAdd * scoreMult * 2;
-			else
-				score += tailAdd * scoreMult;
-
-			food.init(body);
+			return true;
 		}
 
+		return false;
 	}
 }

@@ -4,6 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+/**
+ * class for the food
+ * 
+ * @author Zayed
+ *
+ */
 public class Food {
 
 	private int x, y; // coordinates on the canvas
@@ -12,62 +18,20 @@ public class Food {
 	/**
 	 * Constructor: create and initialize the food
 	 * 
-	 * @param snake: used to avoid initializing the food under the snake.
+	 * @param body       - The body ArrayList extracted from the snake object, used
+	 *                   to avoid putting the piece of food under the snake
+	 * @param gridWidth  - width of the canvas in grids
+	 * @param gridHeight - height of the canvas in grids
+	 * @param cellSize   - size of a grid cell in pixels
 	 */
-	public Food(Snake snake) {
-		init(snake.getBody());
-	}
+	public Food(ArrayList<SnakeBody> body, int gridWidth, int gridHeight, int cellSize) {
 
-	/**
-	 * initialize the food
-	 * 
-	 * @param body: The body ArrayList extracted from the snake object
-	 */
-	public void init(ArrayList<SnakeBody> body) {
-		randomCoordinates(body);
-
-		color = randomColor();
-	}
-
-	/**
-	 * @return a random color between green, red, blue and orange (very rare)
-	 */
-	private Color randomColor() {
-		Color c;
-		double random = Math.random();
-
-		if (random < 0.30)
-			c = Color.GREEN;
-		else if (random < 0.60)
-			c = Color.RED;
-		else if (random < 0.95)
-			c = Color.BLUE;
-		else
-			c = Color.ORANGE;
-
-		return c;
-	}
-
-	/**
-	 * @return the color
-	 */
-	public Color getColor() {
-		return color;
-	}
-
-	/**
-	 * generate the random coordinates
-	 * 
-	 * @param body: The body ArrayList extracted from the snake object. It is used
-	 *              to avoid putting the piece of food under the snake
-	 */
-	private void randomCoordinates(ArrayList<SnakeBody> body) {
 		boolean same = true;
-		int x = -1, y = -1;
+		x = y = -1;
 
 		while (same) {
-			x = ((int) (GameManager.GRID_WIDTH * Math.random())) * GameManager.CELL_SIZE;
-			y = ((int) (GameManager.GRID_HEIGHT * Math.random())) * GameManager.CELL_SIZE;
+			x = ((int) (gridWidth * Math.random())) * cellSize;
+			y = ((int) (gridHeight * Math.random())) * cellSize;
 
 			int i = 0;
 			same = false;
@@ -77,8 +41,26 @@ public class Food {
 			}
 		}
 
-		this.x = x;
-		this.y = y;
+		color = randomColor();
+
+	}
+
+	/**
+	 * get a random color
+	 * 
+	 * @return a random color
+	 */
+	private Color randomColor() {
+		double random = Math.random();
+
+		if (random < 0.30)
+			return Color.GREEN;
+		else if (random < 0.60)
+			return Color.RED;
+		else if (random < 0.95)
+			return Color.BLUE;
+		else
+			return Color.ORANGE;
 	}
 
 	/**
@@ -98,10 +80,11 @@ public class Food {
 	/**
 	 * Draw the piece of food
 	 * 
-	 * @param g Graphics used to draw on the Canvas
+	 * @param g        - Graphics used to draw on the Canvas
+	 * @param cellSize - size of the gird cell in the canvas in pixels
 	 */
-	public void draw(Graphics g) {
+	public void draw(Graphics g, int cellSize) {
 		g.setColor(color);
-		g.fillRect(x, y, GameManager.CELL_SIZE, GameManager.CELL_SIZE);
+		g.fillRect(x, y, cellSize, cellSize);
 	}
 }

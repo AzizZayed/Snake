@@ -10,19 +10,25 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+/**
+ * manage all the game objects, drawing and physics/movement
+ * 
+ * @author Zayed
+ *
+ */
 public class GameManager extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final int CELL_SIZE = 15; // in pixels
+	private static final int CELL_SIZE = 15; // in pixels
 
-	public final static int GRID_WIDTH = 40; // in cells
-	public final static int GRID_HEIGHT = 40; // in cells
+	private final static int GRID_WIDTH = 40; // in cells
+	private final static int GRID_HEIGHT = 40; // in cells
 
-	public final static int WIDTH = CELL_SIZE * GRID_WIDTH; // width of the screen in pixels
-	public final static int HEIGHT = CELL_SIZE * GRID_HEIGHT; // height of the screen in pixels
+	private final static int WIDTH = CELL_SIZE * GRID_WIDTH; // width of the screen in pixels
+	private final static int HEIGHT = CELL_SIZE * GRID_HEIGHT; // height of the screen in pixels
 
-	public boolean running = false; // true if the game is running
+	private boolean running = false; // true if the game is running
 	private boolean paused = false; // updating or not
 	private Thread gameThread; // thread where the game is updated AND drawn (single thread game)
 
@@ -96,10 +102,10 @@ public class GameManager extends Canvas implements Runnable {
 	 */
 	private void initialize() {
 		// Initialize snake object
-		snake = new Snake();
+		snake = new Snake(GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
 
 		// Initialize food object
-		food = new Food(snake);
+		food = new Food(snake.getBody(), GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
 	}
 
 	/**
@@ -226,10 +232,10 @@ public class GameManager extends Canvas implements Runnable {
 		drawBackground(g);
 
 		// draw snake
-		snake.draw(g);
+		snake.draw(g, CELL_SIZE);
 
 		// draw food
-		food.draw(g);
+		food.draw(g, CELL_SIZE);
 
 		// actually draw. If this isn't called, we won't see what we draw on the buffer
 		buffer.show();
@@ -255,7 +261,9 @@ public class GameManager extends Canvas implements Runnable {
 		if (paused)
 			return;
 
-		snake.update(food);
+		if (snake.update(food, GRID_WIDTH, GRID_HEIGHT, WIDTH, HEIGHT, CELL_SIZE))
+			food = new Food(snake.getBody(), GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
+
 	}
 
 	/**

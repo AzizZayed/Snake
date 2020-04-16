@@ -3,6 +3,12 @@ package com.main;
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+ * class contains a body part of the snake
+ * 
+ * @author Zayed
+ *
+ */
 public class SnakeBody {
 
 	private int x, y; // coordinates on the canvas
@@ -10,8 +16,8 @@ public class SnakeBody {
 	/**
 	 * Constructor: create and initialize the SnakeBody object
 	 * 
-	 * @param x: x position
-	 * @param y: y position
+	 * @param x - x position
+	 * @param y - y position
 	 */
 	public SnakeBody(int x, int y) {
 		this.x = x;
@@ -35,14 +41,16 @@ public class SnakeBody {
 	/**
 	 * Draw the part of the snakes body
 	 * 
-	 * @param g Graphics used to draw on the Canvas
+	 * @param g        - Graphics used to draw on the Canvas
+	 * @param color    - color of the snake body part
+	 * @param cellSize - size of a grid cell in pixels
 	 */
-	public void draw(Graphics g, Color color) {
-		g.setColor(color);
-		g.fillRect(x, y, GameManager.CELL_SIZE, GameManager.CELL_SIZE);
+	public void draw(Graphics g, int cellSize) {
+		g.setColor(Color.BLACK);
+		g.fillRect(x, y, cellSize, cellSize);
 
 		g.setColor(Color.WHITE);
-		g.drawRect(x, y, GameManager.CELL_SIZE, GameManager.CELL_SIZE);
+		g.drawRect(x, y, cellSize, cellSize);
 	}
 
 }
